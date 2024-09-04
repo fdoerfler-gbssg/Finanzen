@@ -11,11 +11,23 @@ namespace Bankkonto.Tests
     [TestClass()]
     public class BankkontoTests
     {
+
+        class TestBankkonto : Bankkonto
+        {
+            override public double AktivZins { get; } = 0.001;
+            override public double PassivZins { get; } = 0.015;
+            public override double Ueberzugslimite { get; } = -1000.0;
+            public TestBankkonto() : base(0) { }
+
+            public double AktivzinsDepotSpy { get => AktivzinsGuthaben; }
+            public double PassivzinsDepotSpy { get => PassivzinsGuthaben; }
+        }
+
         [TestMethod()]
         public void AnfangsGuthabenIstNull()
         {
             // arrange
-            Bankkonto leeresBankkonto = new Bankkonto(0);
+            Bankkonto leeresBankkonto = new TestBankkonto();
 
             // act
             // assert
@@ -26,7 +38,7 @@ namespace Bankkonto.Tests
         public void KannEinzahlen()
         {
             // arrange
-            Bankkonto konto = new Bankkonto(0);
+            Bankkonto konto = new TestBankkonto();
 
             // act
             konto.ZahleEin(100.0);
@@ -39,7 +51,7 @@ namespace Bankkonto.Tests
         public void KannBeziehen()
         {
             // arrange
-            Bankkonto konto = new(0);
+            Bankkonto konto = new TestBankkonto();
 
             // act
             konto.Beziehe(100.0);
@@ -52,7 +64,7 @@ namespace Bankkonto.Tests
         public void KeinZinsAufLeeremKOnto()
         {
             // arrange
-            Bankkonto konto = new(0);
+            Bankkonto konto = new TestBankkonto();
 
             // act
             konto.SchribeZinsGut(1);
@@ -67,7 +79,7 @@ namespace Bankkonto.Tests
         public void EinTagZinsWirdGutgeschriebenAberNichtGebucht()
         {
             // arrange
-            Bankkonto konto = new(0);
+            Bankkonto konto = new TestBankkonto();
             const double AnfangsBetrag = 100.0;
 
             // act
@@ -82,7 +94,7 @@ namespace Bankkonto.Tests
         public void EinTagAktivZinsWirdGutgeschriebenUndBeiAbschlussGebucht()
         {
             // arrange
-            Bankkonto konto = new(0);
+            Bankkonto konto = new TestBankkonto();
             const double AnfangsBetrag = 100.0;
 
             // act
@@ -91,14 +103,14 @@ namespace Bankkonto.Tests
             konto.SchliesseKontoAb();
 
             // assert
-            Assert.AreEqual(AnfangsBetrag + (AnfangsBetrag * Bankkonto.AktivZins) / 360, konto.Guthaben, 0.001);
+            Assert.AreEqual(AnfangsBetrag + (AnfangsBetrag * konto.AktivZins) / 360, konto.Guthaben, 0.001);
         }
 
         [TestMethod()]
         public void ZweiTageAktivZinsWirdGutgeschriebenUndBeiAbschlussGebucht()
         {
             // arrange
-            Bankkonto konto = new(0);
+            Bankkonto konto = new TestBankkonto();
             const double AnfangsBetrag = 100.0;
 
             // act
@@ -107,14 +119,14 @@ namespace Bankkonto.Tests
             konto.SchliesseKontoAb();
 
             // assert
-            Assert.AreEqual(AnfangsBetrag + 2 * AnfangsBetrag * Bankkonto.AktivZins / 360, konto.Guthaben, 0.001);
+            Assert.AreEqual(AnfangsBetrag + 2 * AnfangsBetrag * konto.AktivZins / 360, konto.Guthaben, 0.001);
         }
 
         [TestMethod()]
         public void ZweimalEinTagAktivZinsWirdGutgeschriebenUndBeiAbschlussGebucht()
         {
             // arrange
-            Bankkonto konto = new(0);
+            Bankkonto konto = new TestBankkonto();
             const double AnfangsBetrag = 100.0;
 
             // act
@@ -124,14 +136,14 @@ namespace Bankkonto.Tests
             konto.SchliesseKontoAb();
 
             // assert
-            Assert.AreEqual(AnfangsBetrag + 2 * AnfangsBetrag * Bankkonto.AktivZins / 360, konto.Guthaben, 0.001);
+            Assert.AreEqual(AnfangsBetrag + 2 * AnfangsBetrag * konto.AktivZins / 360, konto.Guthaben, 0.001);
         }
 
         [TestMethod()]
         public void EinTagPassivZinsWirdGutgeschriebenUndBeiAbschlussGebucht()
         {
             // arrange
-            Bankkonto konto = new(0);
+            Bankkonto konto = new TestBankkonto();
             const double TestBetrag = 100.0;
 
             // act
@@ -140,8 +152,26 @@ namespace Bankkonto.Tests
             konto.SchliesseKontoAb();
 
             // assert
-            double ErwarteterBetrag = - TestBetrag - (TestBetrag * Bankkonto.PassivZins / 360);
+            double ErwarteterBetrag = - TestBetrag - (TestBetrag * konto.PassivZins / 360);
             Assert.AreEqual(ErwarteterBetrag, konto.Guthaben, 0.001);
+        }
+
+        [TestMethod()]
+        public void SollUndHabezinsWerdenSeparatVerrechnet()
+        {
+            // arrange
+            TestBankkonto konto = new TestBankkonto();
+            const double TestBetrag = 1.0;
+
+            // act
+            konto.ZahleEin(TestBetrag);
+            konto.SchribeZinsGut(1);
+            konto.Beziehe(2 * TestBetrag);
+            konto.SchribeZinsGut(1);
+
+            // assert
+            Assert.AreEqual(TestBetrag * konto.AktivZins / 360.0, konto.AktivzinsDepotSpy);
+            Assert.AreEqual(-TestBetrag * konto.PassivZins / 360.0, konto.PassivzinsDepotSpy);
         }
     }
 }

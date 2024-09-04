@@ -6,16 +6,20 @@ using System.Threading.Tasks;
 
 namespace Bankkonto
 {
-    public class Bankkonto(int kontonummer)
+    public abstract class Bankkonto(int kontonummer)
     {
-        // Zinse nicht in Prozent
-        public static double AktivZins { get; } = 0.001;
-        public static double PassivZins { get; } = 0.015;
+        public class UeberzugslimiteException : Exception;
+        public class BezugslimiteException : Exception;
+
+        // Zinssätze nicht in Prozent
+        abstract public double AktivZins { get; }
+        abstract public double PassivZins { get; }
+        abstract public double Ueberzugslimite { get; }
 
         private int KontoNummer { get; } = kontonummer;
-        public double Guthaben { get; private set; } = 0;
-
-        private double ZinsGuthaben = 0.0;
+        public double Guthaben { get; protected set; } = 0;
+        protected double AktivzinsGuthaben {get; private set;} = 0.0;
+        protected double PassivzinsGuthaben { get; private set; } = 0.0;
 
         public void ZahleEin(double betrag)
         {
@@ -24,20 +28,24 @@ namespace Bankkonto
 
         public void Beziehe(double betrag)
         {
-            Guthaben -= betrag;
+            double neuerBetrag = Guthaben - betrag;
+            if (neuerBetrag < Ueberzugslimite)
+                throw new UeberzugslimiteException();
+            else
+                Guthaben -= betrag;
         }
 
         public void SchribeZinsGut(int anzTage)
         {
             if (Guthaben > 0.0)
-                ZinsGuthaben += Guthaben * AktivZins / 360 * anzTage;
+                AktivzinsGuthaben += Guthaben * AktivZins / 360 * anzTage;
             else
-                ZinsGuthaben += Guthaben * PassivZins / 360 * anzTage;
+                PassivzinsGuthaben += Guthaben * PassivZins / 360 * anzTage;
         }
 
         public void SchliesseKontoAb()
         {
-            Guthaben += ZinsGuthaben;
+            Guthaben += AktivzinsGuthaben + PassivzinsGuthaben;
         }
     }
 }
