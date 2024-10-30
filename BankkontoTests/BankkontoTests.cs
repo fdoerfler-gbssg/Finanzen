@@ -11,10 +11,10 @@ namespace Bankkonto.Tests
     [TestClass()]
     public class BankkontoTests
     {
-
+        const double TestAktivZins = 0.015;
         class TestBankkonto : Bankkonto
         {
-            override public double AktivZins { get; } = 0.001;
+            override public double AktivZins { get; } = TestAktivZins;
             override public double PassivZins { get; } = 0.015;
             public override double Ueberzugslimite { get; } = -1000.0;
             public TestBankkonto() : base(0) { }
@@ -61,7 +61,7 @@ namespace Bankkonto.Tests
         }
 
         [TestMethod()]
-        public void KeinZinsAufLeeremKOnto()
+        public void KeinZinsAufLeeremKonto()
         {
             // arrange
             Bankkonto konto = new TestBankkonto();
@@ -172,6 +172,25 @@ namespace Bankkonto.Tests
             // assert
             Assert.AreEqual(TestBetrag * konto.AktivZins / 360.0, konto.AktivzinsDepotSpy);
             Assert.AreEqual(-TestBetrag * konto.PassivZins / 360.0, konto.PassivzinsDepotSpy);
+        }
+
+        [TestMethod()]
+        [DataRow(5000, TestAktivZins)]
+        [DataRow(30000, TestAktivZins - 0.005)]
+        [DataRow(70000, TestAktivZins - 0.0075)]
+        [DataRow(120000, TestAktivZins - 0.01)]
+        public void ZinsIstAbhaengigVomKontostand(double Guthaben, double ErwarteterZins)
+        {
+            // arrange
+            TestBankkonto konto = new TestBankkonto();
+
+            // act
+            konto.ZahleEin(Guthaben);
+            konto.SchreibeZinsGut(1);
+
+            // assert
+            double zins = konto.AktivzinsDepotSpy / Guthaben * 360.0;
+            Assert.AreEqual(ErwarteterZins, zins, 0.000001);
         }
     }
 }
