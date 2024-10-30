@@ -39,9 +39,9 @@ namespace Bankkonto
         private double berechneEffektiverAktivzins()
         {
             double aktivZinsAbzug = 0.0;
-            if (Guthaben <= 10000.0) { aktivZinsAbzug = 0.0; }
-            else if (Guthaben <= 50000.0) { aktivZinsAbzug = 0.005; }
-            else if (Guthaben <= 100000.0) { aktivZinsAbzug = 0.0075; }
+            if (Guthaben < 10000.0) { aktivZinsAbzug = 0.0; }
+            else if (Guthaben < 50000.0) { aktivZinsAbzug = 0.005; }
+            else if (Guthaben < 100000.0) { aktivZinsAbzug = 0.0075; }
             else { aktivZinsAbzug = 0.01; }
             return AktivZins - aktivZinsAbzug;
         }

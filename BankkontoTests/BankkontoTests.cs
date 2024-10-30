@@ -179,6 +179,14 @@ namespace Bankkonto.Tests
         [DataRow(30000, TestAktivZins - 0.005)]
         [DataRow(70000, TestAktivZins - 0.0075)]
         [DataRow(120000, TestAktivZins - 0.01)]
+        [DataRow(-0.01, 0.0)]
+        [DataRow(0.01, TestAktivZins)]
+        [DataRow(9999.9, TestAktivZins)]
+        [DataRow(10000.0, TestAktivZins - 0.005)]
+        [DataRow(49999.9, TestAktivZins - 0.005)]
+        [DataRow(50000.0, TestAktivZins - 0.0075)]
+        [DataRow(99999.9, TestAktivZins - 0.0075)]
+        [DataRow(100000.0, TestAktivZins - 0.01)]
         public void ZinsIstAbhaengigVomKontostand(double Guthaben, double ErwarteterZins)
         {
             // arrange
