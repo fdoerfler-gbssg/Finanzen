@@ -67,7 +67,7 @@ namespace Bankkonto.Tests
             Bankkonto konto = new TestBankkonto();
 
             // act
-            konto.SchribeZinsGut(1);
+            konto.SchreibeZinsGut(1);
             konto.SchliesseKontoAb();
 
             // assert
@@ -84,7 +84,7 @@ namespace Bankkonto.Tests
 
             // act
             konto.ZahleEin(AnfangsBetrag);
-            konto.SchribeZinsGut(1);
+            konto.SchreibeZinsGut(1);
 
             // assert
             Assert.AreEqual(AnfangsBetrag, konto.Guthaben, 0.001);
@@ -99,7 +99,7 @@ namespace Bankkonto.Tests
 
             // act
             konto.ZahleEin(AnfangsBetrag);
-            konto.SchribeZinsGut(1);
+            konto.SchreibeZinsGut(1);
             konto.SchliesseKontoAb();
 
             // assert
@@ -115,7 +115,7 @@ namespace Bankkonto.Tests
 
             // act
             konto.ZahleEin(AnfangsBetrag);
-            konto.SchribeZinsGut(2);
+            konto.SchreibeZinsGut(2);
             konto.SchliesseKontoAb();
 
             // assert
@@ -131,8 +131,8 @@ namespace Bankkonto.Tests
 
             // act
             konto.ZahleEin(AnfangsBetrag);
-            konto.SchribeZinsGut(1);
-            konto.SchribeZinsGut(1);
+            konto.SchreibeZinsGut(1);
+            konto.SchreibeZinsGut(1);
             konto.SchliesseKontoAb();
 
             // assert
@@ -148,7 +148,7 @@ namespace Bankkonto.Tests
 
             // act
             konto.Beziehe(TestBetrag);
-            konto.SchribeZinsGut(1);
+            konto.SchreibeZinsGut(1);
             konto.SchliesseKontoAb();
 
             // assert
@@ -165,9 +165,9 @@ namespace Bankkonto.Tests
 
             // act
             konto.ZahleEin(TestBetrag);
-            konto.SchribeZinsGut(1);
+            konto.SchreibeZinsGut(1);
             konto.Beziehe(2 * TestBetrag);
-            konto.SchribeZinsGut(1);
+            konto.SchreibeZinsGut(1);
 
             // assert
             Assert.AreEqual(TestBetrag * konto.AktivZins / 360.0, konto.AktivzinsDepotSpy);

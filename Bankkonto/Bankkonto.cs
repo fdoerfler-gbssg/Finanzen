@@ -8,6 +8,7 @@ namespace Bankkonto
 {
     public abstract class Bankkonto(int kontonummer)
     {
+        public class UngueltigeEingabeException : Exception;
         public class UeberzugslimiteException : Exception;
         public class BezugslimiteException : Exception;
 
@@ -35,8 +36,9 @@ namespace Bankkonto
                 Guthaben -= betrag;
         }
 
-        public void SchribeZinsGut(int anzTage)
+        public void SchreibeZinsGut(int anzTage)
         {
+            if (anzTage < 0) throw new UngueltigeEingabeException();
             if (Guthaben > 0.0)
                 AktivzinsGuthaben += Guthaben * AktivZins / 360 * anzTage;
             else
