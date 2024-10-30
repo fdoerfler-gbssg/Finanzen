@@ -16,7 +16,7 @@ namespace Bankkonto
 		{
 		}
 
-		public new void Beziehe(double betrag)
+		public override void Beziehe(double betrag)
 		{
 			if (betrag > Bezugslimite)
 				throw new BezugslimiteException();

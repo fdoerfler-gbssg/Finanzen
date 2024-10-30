@@ -1,0 +1,10 @@
+﻿C:\Users\Florian.Doerfler\source\repos\Finanzen\BankkontoTests\BankkontoTests.cs
+C:\Users\Florian.Doerfler\source\repos\Finanzen\BankkontoTests\JugendkontoTests.cs
+C:\Users\Florian.Doerfler\source\repos\Finanzen\BankkontoTests\PrivatkontoTests.cs
+C:\Users\Florian.Doerfler\source\repos\Finanzen\BankkontoTests\SparkontoTests.cs
+C:\Users\Florian.Doerfler\.nuget\packages\microsoft.net.test.sdk\17.8.0\build\netcoreapp3.1\Microsoft.NET.Test.Sdk.Program.cs
+C:\Users\Florian.Doerfler\.nuget\packages\microsoft.testplatform.testhost\17.8.0\build\netcoreapp3.1\x64\testhost.exe
+C:\Users\Florian.Doerfler\.nuget\packages\microsoft.testplatform.testhost\17.8.0\build\netcoreapp3.1\x64\testhost.dll
+C:\Users\Florian.Doerfler\.nuget\packages\mstest.testadapter\3.1.1\build\net6.0\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\Florian.Doerfler\.nuget\packages\mstest.testadapter\3.1.1\build\net6.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\Florian.Doerfler\.nuget\packages\mstest.testadapter\3.1.1\build\net6.0\Microsoft.TestPlatform.AdapterUtilities.dll

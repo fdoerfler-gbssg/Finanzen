@@ -1,0 +1,4 @@
+﻿C:\Users\Florian.Doerfler\source\repos\Finanzen\Bankkonto\Bankkonto.cs
+C:\Users\Florian.Doerfler\source\repos\Finanzen\Bankkonto\Jugendkonto.cs
+C:\Users\Florian.Doerfler\source\repos\Finanzen\Bankkonto\Privatkonto.cs
+C:\Users\Florian.Doerfler\source\repos\Finanzen\Bankkonto\Sparkonto.cs

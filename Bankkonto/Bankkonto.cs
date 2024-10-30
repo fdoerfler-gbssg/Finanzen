@@ -26,7 +26,7 @@ namespace Bankkonto
             Guthaben += betrag;
         }
 
-        public void Beziehe(double betrag)
+        public virtual void Beziehe(double betrag)
         {
             double neuerBetrag = Guthaben - betrag;
             if (neuerBetrag < Ueberzugslimite)
